@@ -91,3 +91,5 @@ export const logout = async (req, res) => {
         return res.status(500).json({message: `LogOut Error ${error}`})
     }
 }
+
+

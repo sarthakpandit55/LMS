@@ -7,6 +7,8 @@ import {ToastContainer} from "react-toastify";
 import getCurrentUser from './customHooks/getCurretnUser.js'
 import { useSelector } from 'react-redux'
 import Profile from './Pages/Profile.jsx'
+import ForgetPassword from './Pages/ForgetPassword.jsx'
+import EditProfile from './Pages/EditProfile.jsx'
 export const serverUrl = "http://localhost:8000"
 
 const App = () => {
@@ -21,6 +23,8 @@ const App = () => {
         <Route path='/signup' element={!userData ? <Signup/> : <Navigate to={"/"}/>}/>
         <Route path='/login' element={<Login/>}/>
         <Route path='/profile' element={userData ? <Profile/> : <Navigate to={"/signup"}/>}/>
+        <Route path='/forget' element={userData ? <ForgetPassword/> : <Navigate to={"/signup"}/>}/>
+        <Route path='/editprofile' element={userData ? <EditProfile/> : <Navigate to={"/signup"}/>}/>
       </Routes>
     </>
   )
