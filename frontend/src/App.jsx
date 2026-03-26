@@ -18,6 +18,8 @@ import getPublishedCourse from './customHooks/getPublishedCourse.js'
 import AllCourses from './Pages/Educator/AllCourses.jsx'
 import CreateLecture from './Pages/Educator/CreateLecture.jsx'
 import EditLecture from './Pages/Educator/EditLecture.jsx'
+import ViewCourse from './Pages/Educator/ViewCourse.jsx'
+import ScrollToTop from './components/ScrollToTop.jsx'
 export const serverUrl = "http://localhost:8000"
 
 const App = () => {
@@ -29,6 +31,7 @@ const App = () => {
   return (
     <>
       <ToastContainer/>
+      <ScrollToTop/>
       <Routes>
         <Route path='/' element={<Home/>}/>
         <Route path='/signup' element={!userData ? <Signup/> : <Navigate to={"/"}/>}/>
@@ -46,6 +49,7 @@ const App = () => {
 
         <Route path='/createlecture/:courseId' element={userData?.role === "educator" ? <CreateLecture/> : <Navigate to={"/signup"}/>}/>
         <Route path='/editlecture/:courseId/:lectureId' element={userData?.role === "educator" ? <EditLecture/> : <Navigate to={"/signup"}/>}/>
+        <Route path='/viewcourse/:courseId' element={userData ? <ViewCourse/> : <Navigate to={"/signup"}/>}/>
       </Routes>
     </>
   )

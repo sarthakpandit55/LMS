@@ -1,5 +1,6 @@
 import Course from "../model/courseModel.js"
 import Lecture from "../model/lectureModel.js"
+import User from "../model/userModel.js"
 import uploadOnCloudinary from "../config/cloudinary.js"
 
 export const createCourse = async(req, res) => {
@@ -160,27 +161,43 @@ export const editLecture = async(req, res) => {
     try {
         const {lectureId} = req.params
         const {isPreviewFree, lectureTitle} = req.body
+        console.log("Edit lecture request:", {lectureId, lectureTitle, isPreviewFree})
+        console.log("File received:", req.file ? {name: req.file.originalname, size: req.file.size, path: req.file.path} : "NO FILE")
+        
         const lecture = await Lecture.findById(lectureId)
         if(!lecture){
             return res.status(404).json({message:"Lecture is not found"})
         }
 
-        let videoUrl
+        // Update videoUrl if file is provided
         if(req.file){
-            videoUrl = await uploadOnCloudinary(req.file.path)
-            lecture.videoUrl = videoUrl
+            console.log("Attempting to upload video file...")
+            const videoUrl = await uploadOnCloudinary(req.file.path)
+            if(videoUrl){
+                console.log("Video URL set to:", videoUrl)
+                lecture.videoUrl = videoUrl
+            } else {
+                console.error("Video upload failed - no URL returned")
+                return res.status(500).json({message:"Video upload failed"})
+            }
+        } else {
+            console.log("No file provided, keeping existing videoUrl:", lecture.videoUrl)
         }
 
+        // Update lecture title if provided
         if(lectureTitle){
             lecture.lectureTitle = lectureTitle
         }
 
-        lecture.isPreviewFree = isPreviewFree
+        // Update preview status - handle both string and boolean values
+        lecture.isPreviewFree = isPreviewFree === 'true' || isPreviewFree === true
 
-        await lecture.save()
-        return res.status(200).json(lecture)
+        const savedLecture = await lecture.save()
+        console.log("Lecture saved successfully:", savedLecture)
+        return res.status(200).json(savedLecture)
     } catch (error) {
-        return res.status(500).json({message:`failed to edit Lecture ${error}`})
+        console.error("Error editing lecture:", error)
+        return res.status(500).json({message:`failed to edit Lecture ${error.message}`})
     }
 }
 
@@ -204,4 +221,21 @@ export const removeLecture = async (req, res)=>{
     } catch (error) {
         return res.status(500).json({message:`failed to remove Lecture ${error}`})
     }
+}
+
+
+// get creator
+
+
+export const getCreatorById = async (req, res) => {
+    try {
+        const {userId} = req.body
+        const user = await User.findById(userId).select("-password")
+        if(!user){
+            return res.status(404).json({message:"User is not Fouund"})
+        }
+        return res.status(200).json(user)
+    } catch (error) {
+        return res.status(500).json({message:`failed to get Creator ${error}`})
+}
 }

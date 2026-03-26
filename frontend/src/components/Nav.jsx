@@ -42,20 +42,23 @@ function Nav() {
           />
         </div>
         <div className="w-[30%] lg:flex items-center justify-center gap-4 hidden">
-          {!userData && (
+          { !userData ? (
             <IoPersonCircle
               className="h-[50px] w-[50px] fill-white cursor-pointer"
               onClick={() => setShow((prev) => !prev)}
             />
-          )}
-          {userData?.photoUrl ? (
-            <img src={userData?.photoUrl} className="w-[50px] h-[50px] rounded-full text-white flex items-center justify-center text-[20px] border-2 bg-black border-white cursor-pointer " onClick={() => setShow((prev) => !prev)}/>
+          ) : userData.photoUrl ? (
+            <img
+              src={userData.photoUrl}
+              className="w-[50px] h-[50px] rounded-full text-white flex items-center justify-center text-[20px] border-2 bg-black border-white cursor-pointer"
+              onClick={() => setShow((prev) => !prev)}
+            />
           ) : (
             <div
-              className="w-[50px] h-[50px] rounded-full text-white flex items-center justify-center text-[20px] border-2 bg-black border-white cursor-pointer "
+              className="w-[50px] h-[50px] rounded-full text-white flex items-center justify-center text-[20px] border-2 bg-black border-white cursor-pointer"
               onClick={() => setShow((prev) => !prev)}
             >
-              {userData?.name.slice(0, 1).toUpperCase()}
+              {userData?.name?.slice(0, 1).toUpperCase()}
             </div>
           )}
           {userData?.role === "educator" && (
@@ -109,14 +112,18 @@ function Nav() {
             className="w-[35px] h-[35px] text-white absolute top-5 right-[4%]"
             onClick={() => setShowHam((prev) => !prev)}
           />
-          {!userData && (
+          { !userData ? (
             <IoPersonCircle className="h-[50px] w-[50px] fill-black cursor-pointer rounded-full" />
-          )}
-          {userData?.photoUrl ? <img src={userData?.photoUrl} className="w-[50px] h-[50px] rounded-full text-white flex items-center justify-center text-[20px] border-2 bg-black border-white cursor-pointer " />:
+          ) : userData.photoUrl ? (
+            <img
+              src={userData.photoUrl}
+              className="w-[50px] h-[50px] rounded-full text-white flex items-center justify-center text-[20px] border-2 bg-black border-white cursor-pointer"
+            />
+          ) : (
             <div className="w-[50px] h-[50px] rounded-full text-white flex items-center justify-center text-[20px] border-2 bg-black border-white cursor-pointer ">
-              {userData?.name.slice(0, 1).toUpperCase()}
+              {userData?.name?.slice(0, 1).toUpperCase()}
             </div>
-          }
+          )}
           <div
             className="px-8 py-3 border-2 border-white text-white bg-[black] rounded-[10px] text-[18px] font-light flex items-center justify-center cursor-pointer"
             onClick={() => navigate("/profile")}

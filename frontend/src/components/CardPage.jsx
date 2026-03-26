@@ -18,10 +18,10 @@ const CardPage = () => {
         Explore top-rated courses designed to boost your skills, enhance
         careers, and unl;ock opportunities in tech, AI, business, and beyond.
       </span>
-      <div className="w-full flex items-center justify-center wrap gap-[50px] lg:p-[50px] md:p-[30px] p-2.5 mb-10">
+      <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:py-12 lg:px-32 md:p-8 p-2 mb-10">
         {popularCourses?.map((course, index) => (
           <Card
-            key={index}
+            key={course._id || index}
             thumbnail={course.thumbnail}
             title={course.title}
             category={course.category}

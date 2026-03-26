@@ -18,30 +18,40 @@ const EditLecture = () => {
         const selectedLecture = lectureData.find(lecture => lecture._id === lectureId)
         const navigate = useNavigate()
         const [lectureTitle , setLectureTitle] = useState(selectedLecture?.lectureTitle)
-        const [videoUrl, setVideoUrl] = useState("")
-        const [isPreviewFree, setIsPreviewFree] = useState(false)
+        const [videoFile, setVideoFile] = useState(null)
+        const [isPreviewFree, setIsPreviewFree] = useState(selectedLecture?.isPreviewFree || false)
         const [loading, setLoading] = useState(false)
         const [loading1, setLoading1] = useState(false)
         const dispatch = useDispatch()
 
-        const formdata = new FormData()
-        formdata.append("lectureTitle",lectureTitle)
-        formdata.append("videoUrl",videoUrl)
-        formdata.append("isPreviewFree",isPreviewFree)
-
         const handleEditLecture = async () => {
+            if(!videoFile && !lectureTitle){
+                toast.error("Please update at least lecture title or select a video")
+                return
+            }
+            
             setLoading(true)
             try {
-                const result = await axios.post(serverUrl + `/api/course/editlecture/${lectureId}` , formdata, 
-                {withCredentials:true})
-                console.log(result.data)
-                dispatch(setLectureData([...lectureData, result.data]))
-                toast.success("Lecture Updated")
-                navigate("/courses")
+                const formdata = new FormData()
+                formdata.append("lectureTitle", lectureTitle)
+                if(videoFile){
+                    console.log("Adding video to FormData:", {name: videoFile.name, size: videoFile.size, type: videoFile.type})
+                    formdata.append("videoUrl", videoFile)
+                }
+                formdata.append("isPreviewFree", isPreviewFree)
+                
+                console.log("Sending request to update lecture:", {lectureId, hasVideo: !!videoFile})
+                const result = await axios.post(serverUrl + `/api/course/editlecture/${lectureId}`, formdata, 
+                {withCredentials: true, headers: {'Content-Type': 'multipart/form-data'}})
+                
+                console.log("Update response:", result.data)
+                dispatch(setLectureData(lectureData.map(lecture => lecture._id === lectureId ? result.data : lecture)))
+                toast.success("Lecture Updated Successfully")
+                navigate(`/createlecture/${courseId}`)
                 setLoading(false)
             } catch (error) {
-                console.log(error)
-                toast.error(error.response.data.message)
+                console.error("Error updating lecture:", error.response?.data || error.message)
+                toast.error(error.response?.data?.message || "Error updating lecture")
                 setLoading(false)
             }
         }
@@ -91,21 +101,25 @@ const EditLecture = () => {
                     <div>
                         <label className='block text-sm font-medium
                         text-gray-700 mb-1' htmlFor="">Video *</label>
+                        {selectedLecture?.videoUrl && (
+                            <p className='text-xs text-green-600 mb-2'>✓ Current video uploaded: {selectedLecture.videoUrl.split('/').pop().substring(0, 30)}...</p>
+                        )}
                         <input type="file" className='w-full
                         border border-gray-300 rounded-md p-2 file:mr-4
                         file:py-2 file:px-4 file:rounded-md
                         file:border-0 file:text-sm file:bg-gray-700
-                        file:text-[white] hover:file:bg-gray-500' required
-                        accept='video/*' onChange={(e)=>setVideoUrl(e.target.files[0])} />
+                        file:text-[white] hover:file:bg-gray-500' 
+                        accept='video/*' onChange={(e)=>setVideoFile(e.target.files[0])} />
+                        {videoFile && <p className='text-sm text-green-600 mt-1'>✓ Selected: {videoFile.name}</p>}
                     </div>
 
                     <div className='flex items-center gap-3'>
                         <input type="checkbox" className='accent-[black]
-                        h-4 w-4' id='isFree' onChange={()=>setIsPreviewFree(prev=>!prev)} />
+                        h-4 w-4' id='isFree' checked={isPreviewFree} onChange={()=>setIsPreviewFree(prev=>!prev)} />
                         <label htmlFor="isFree" className='text-sm
                         text-gray-700'>Is this Video free</label>
                     </div>
-                   {loading ? <p>Uploading video... Please wait.</p> : ""} 
+                   {loading ? <p className='text-blue-600'>⏳ Uploading video... Please wait.</p> : ""} 
                 
                     
                 </div>
