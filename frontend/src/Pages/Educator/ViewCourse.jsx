@@ -18,10 +18,12 @@ const ViewCourse = () => {
     const {courseId} = useParams()
     const {courseData} = useSelector(state=>state.course)
     const {selectedCourse} = useSelector(state=>state.course)
+    const {userData} = useSelector(state=>state.user)
     const dispatch = useDispatch()
     const [selectedLecture,setSelectedLecture] = useState(null)
     const [creatorData,setCreatorData] = useState(null)
     const [creatorCourses,setCreatorCourses] = useState(null)
+    const [isEnrolled,  setIsEnrolled] = useState(false)
 
 
     
@@ -36,9 +38,20 @@ const ViewCourse = () => {
         })
     }
 
+    const checkEnrollment = () =>{
+        const verify = userData?.enrolledCourses?.some(c => 
+            (typeof c === 'string' ? c : c._id).toString() === courseId?.toString()
+        )
+
+        if(verify){
+            setIsEnrolled(true)
+        }
+    }
+
     useEffect(()=>{
         fetchCourseData()
-    },[courseData,courseId])
+        checkEnrollment()
+    },[courseData,courseId,userData])
     
     useEffect(()=>{
         const fetchLectures = async () => {
@@ -92,6 +105,46 @@ const ViewCourse = () => {
     },[creatorData, courseData])
 
 
+    const handelEnroll = async (userId, courseId) => {
+        try {
+            const orderData = await axios.post(serverUrl + "/api/order/razorpay-order", {userId, courseId}, {withCredentials:true})
+            console.log(orderData)
+
+            const options = {
+                key : import.meta.env.VITE_RAZORPAY_KEY_ID,
+                amount : orderData.data.amount,
+                currency : "INR",
+                name : "CORTEX",
+                description : "Course Purchase",
+                order_id : orderData.data.id,
+                handler : async(response)=>{
+                    console.log("Razorpay Response", response);
+
+                try {
+                    const verifyPayment = await axios.post(serverUrl + "/api/order/verifypayment", {
+                        ...response,
+                        courseId,
+                        userId
+                    }, {withCredentials:true})
+                    
+                    setIsEnrolled(true)
+                    toast.succes(verifyPayment.data.message)
+                } catch (error) {
+                    toast.error(error.response.data.message)
+                }
+                }
+            }
+
+            const rzp = new window.Razorpay(options)
+            rzp.open()
+
+        } catch (error) {
+            console.log(error)
+            toast.error("Something went wrong while enrolling.")
+        }
+    }
+
+
 
   return (
     <div className='min-h-screen bg-gray-50 p-6'>
@@ -99,11 +152,11 @@ const ViewCourse = () => {
         <div className='max-w-6xl mx-auto bg-white shadow-md rounded-xl p-6 space-y-6 relative'>
 
             {/* top Section */}
+                 <FaArrowLeftLong className='text-[black] w-[22px] h-[22px] cursor-pointer' onClick={()=>navigate("/")}/>
             <div className='flex flex-col md:flex-row gap-6'>
 
                 {/* thumbnail */}
                 <div className='w-full md:w-1/2'>
-                 <FaArrowLeftLong className='text-[black] w-[22px] h-[22px] cursor-pointer' onClick={()=>navigate("/")}/>
                     {selectedCourse?.thumbnail ? <img src={selectedCourse?.thumbnail} alt="" className='rounded-xl w-full object-cover'/> : <img src={img} alt="" className='rounded-xl w-full object-cover'/>
                     }
                 </div>
@@ -135,7 +188,9 @@ const ViewCourse = () => {
                             <li>✅ 10+ hours of video content</li>
                             <li>✅ Lifetime access to course materials</li>
                         </ul>
-                        <button className='bg-[black] text-white px-6 py-2 rounded hover:bg-gray-700 mt-3 cursor-pointer'>Enroll Now</button>
+                        {!isEnrolled ? <button className='bg-[black] text-white px-6 py-2 rounded hover:bg-gray-700 mt-3 cursor-pointer' onClick={()=>handelEnroll(userData._id, courseId)} >Enroll Now</button> 
+                        : 
+                        <button className='bg-green-100 text-green-500 px-6 py-2 rounded hover:bg-gray-700 mt-3 cursor-pointer'>Watch Now</button>}
                         
                     </div>
                             </div>

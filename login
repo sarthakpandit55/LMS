@@ -10,3 +10,6 @@ role :- educator
 username :- rohangupta121@gmail.com
 password :- 9999999999
 role :- student
+
+to do the sample payment
+success@razorpay
