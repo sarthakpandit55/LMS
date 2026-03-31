@@ -90,7 +90,7 @@ function Nav() {
               >
                 My Profile
               </span>
-              <span className="bg-black text-white px-[30px] py-2.5 rounded-2xl hover:bg-gray-600">
+              <span className="bg-black text-white px-[30px] py-2.5 rounded-2xl hover:bg-gray-600" onClick={()=>navigate("/mycourses")}>
                 My Courses
               </span>
             </div>
@@ -130,7 +130,7 @@ function Nav() {
           >
             My Profile
           </div>
-          <div className="px-8 py-3 border-2 border-white text-white bg-[black] rounded-[10px] text-[18px] font-light flex items-center justify-center cursor-pointer">
+          <div className="px-8 py-3 border-2 border-white text-white bg-[black] rounded-[10px] text-[18px] font-light flex items-center justify-center cursor-pointer"  onClick={()=>navigate("/mycourses")}>
             My Cources
           </div>
           {userData?.role === "educator" && (

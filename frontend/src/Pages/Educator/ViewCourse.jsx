@@ -83,6 +83,8 @@ const ViewCourse = () => {
         }
         handelCreator()
     },[selectedCourse])
+
+    
     useEffect(()=>{
         if(selectedCourse?.lectures && selectedCourse?.lectures?.length > 0){
             const firstPreviewLecture = selectedCourse.lectures.find(lecture => lecture.isPreviewFree)
@@ -190,7 +192,7 @@ const ViewCourse = () => {
                         </ul>
                         {!isEnrolled ? <button className='bg-[black] text-white px-6 py-2 rounded hover:bg-gray-700 mt-3 cursor-pointer' onClick={()=>handelEnroll(userData._id, courseId)} >Enroll Now</button> 
                         : 
-                        <button className='bg-green-100 text-green-500 px-6 py-2 rounded hover:bg-gray-700 mt-3 cursor-pointer'>Watch Now</button>}
+                        <button className='bg-green-100 text-green-500 px-6 py-2 rounded hover:bg-gray-700 mt-3 cursor-pointer' onClick={()=>navigate(`/viewlecture/${courseId}`)}>Watch Now</button>}
                         
                     </div>
                             </div>

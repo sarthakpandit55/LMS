@@ -19,7 +19,9 @@ import AllCourses from './Pages/Educator/AllCourses.jsx'
 import CreateLecture from './Pages/Educator/CreateLecture.jsx'
 import EditLecture from './Pages/Educator/EditLecture.jsx'
 import ViewCourse from './Pages/Educator/ViewCourse.jsx'
+import ViewLectures from './Pages/ViewLectures.jsx'
 import ScrollToTop from './components/ScrollToTop.jsx'
+import MyEnrolledCourses from './Pages/MyEnrolledCourses.jsx'
 export const serverUrl = "http://localhost:8000"
 
 const App = () => {
@@ -50,6 +52,8 @@ const App = () => {
         <Route path='/createlecture/:courseId' element={userData?.role === "educator" ? <CreateLecture/> : <Navigate to={"/signup"}/>}/>
         <Route path='/editlecture/:courseId/:lectureId' element={userData?.role === "educator" ? <EditLecture/> : <Navigate to={"/signup"}/>}/>
         <Route path='/viewcourse/:courseId' element={userData ? <ViewCourse/> : <Navigate to={"/signup"}/>}/>
+        <Route path='/viewlecture/:courseId' element={userData ? <ViewLectures/> : <Navigate to={"/signup"}/>}/>
+        <Route path='/mycourses' element={userData ? <MyEnrolledCourses/> : <Navigate to={"/signup"}/>}/>
       </Routes>
     </>
   )
