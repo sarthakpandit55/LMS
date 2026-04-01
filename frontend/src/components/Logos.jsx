@@ -7,7 +7,7 @@ import { FaUsers } from "react-icons/fa";
 
 const Logos = () => {
   return (
-    <div className="w-screen min-h-[90px] flex items-center justify-center flex-wrap gap-4 md:mb-[50px]">
+    <div className="w-screen min-h-[90px] flex items-center justify-center flex-wrap gap-4 md:mb-[50px] mt-5">
       <div className="flex items-center justify-center gap-2 px-5 py-3 rounded-3xl bg-gray-200 cursor-pointer">
         <MdCastForEducation className="w-[35px] h-[35px] fill-[#03394b] "/>
         @20k+ Online Courses

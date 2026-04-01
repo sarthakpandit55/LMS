@@ -10,7 +10,7 @@ const CardPage = () => {
     setPopularCourses(courseData?.slice(0, 6));
   }, [courseData]);
   return (
-    <div className="relative flex items-center justify-center flex-col">
+    <div className="relative flex items-center justify-center flex-col mx-6">
       <h1 className="md:text-[45px] text-[30px] font-semibold text-center mt-[30px] px-5">
         Our Popular Courses
       </h1>
@@ -27,6 +27,7 @@ const CardPage = () => {
             category={course.category}
             price={course.price}
             id={course._id}
+            reviews={course.reviews}
           />
         ))}
       </div>

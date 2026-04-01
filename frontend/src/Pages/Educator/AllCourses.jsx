@@ -103,7 +103,7 @@ const AllCourses = () => {
 
                 {
                     filterCourses?.map((course, index)=>(
-                        <Card key={index} thumbnail={course.thumbnail} title={course.title} category={course.category} price={course.price} id={course._id} />
+                        <Card key={index} thumbnail={course.thumbnail} title={course.title} category={course.category} price={course.price} id={course._id} reviews={course.reviews} />
                     ))
                 }
 
