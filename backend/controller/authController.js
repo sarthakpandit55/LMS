@@ -34,8 +34,8 @@ export const signUp = async(req, res) => {
         let token = await genToken(user._id)
         res.cookie("token", token, {       // we have used the req before now we are using the res to send the response this is the error that we faced while writing the code.
             httpOnly: true,
-            secure : false,
-            sameSite : "Strict",
+            secure : true,
+            sameSite : "none",
             maxAge : 7 * 24 * 60 * 1000  //converted 7 days into millisecond
         })
 
@@ -67,8 +67,8 @@ export const login = async (req, res) =>{
         let token = await genToken(user._id)
         res.cookie("token", token, {
             httpOnly: true,
-            secure : false,
-            sameSite : "Strict",
+            secure : true,
+            sameSite : "none",
             maxAge : 7 * 24 * 60 * 1000  //converted 7 days into millisecond
         })
 
