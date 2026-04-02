@@ -38,7 +38,7 @@ const Home = () => {
           <button className="px-5 py-2.5 border-2 lg:border-white border-black lg:text-white text-black rounded-[10px] text-[18px] font-light flex gap-2 cursor-pointer" onClick={()=>navigate("/allcourses")}>
             View All Courses <SiViaplay className="w-[30px] h-[30px] lg:fill-white fill-black" />
           </button>
-          <button className="px-5 py-2.5 lg:bg-white bg-black lg:text-black text-white rounded-[10px] text-[18px] font-light flex gap-2 cursor-pointer items-center justify-center">
+          <button className="px-5 py-2.5 lg:bg-white bg-black lg:text-black text-white rounded-[10px] text-[18px] font-light flex gap-2 cursor-pointer items-center justify-center" onClick={()=>navigate("/search")}>
             Search With Ai <img src={ai} className="w-[30px] h-[30px] rounded-full hidden lg:block" alt="" />  <img src={ai1} className="w-[30px] h-[30px] rounded-full lg:hidden " alt="" />
           </button>
 

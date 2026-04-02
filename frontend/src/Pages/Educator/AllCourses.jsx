@@ -57,7 +57,7 @@ const AllCourses = () => {
                 </h2>
 
                 <form action="" onSubmit={(e)=>e.preventDefault()} className='space-y-4 text-sm bg-gray-600 border-white text-white border p-5 rounded-2xl'>
-                    <button className='px-2.5 py-2.5  bg-black text-white  rounded-[10px] text-[15px] font-light flex items-center justify-center gap-2 cursor-pointer'>Search with AI <img src={ai} className='w-[30px] h-[30px] rounded-full' alt="" /></button>
+                    <button className='px-2.5 py-2.5  bg-black text-white  rounded-[10px] text-[15px] font-light flex items-center justify-center gap-2 cursor-pointer' onClick={()=>navigate("/search")}>Search with AI <img src={ai} className='w-[30px] h-[30px] rounded-full' alt="" /></button>
 
                     <label htmlFor="" className="flex items-center gap-3 cursor-pointer hover:text-gray-200 transition  " >
                         <input type="checkbox" className="accent-black w-4 h-4 rounded-md " value={"App Development"} onChange={toggleCategory} /> App Development
