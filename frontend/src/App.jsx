@@ -24,7 +24,7 @@ import ScrollToTop from './components/ScrollToTop.jsx'
 import MyEnrolledCourses from './Pages/MyEnrolledCourses.jsx'
 import SearchWithAi from './Pages/SearchWithAi.jsx'
 import getAllReviews from './customHooks/getAllReviews.js'
-export const serverUrl = "http://localhost:8000"
+export const serverUrl = "https://lms-cuvo.onrender.com"
 
 const App = () => {
   getCurrentUser()
