@@ -213,12 +213,12 @@ const ViewCourse = () => {
                             <span className='flex items-center justify-start gap-1'>
                                 <FaStar/>{avgRating}
                             </span>
-                            <span className='text-gray-400'>(1,200 Reviews)</span>
+                            <span className='text-gray-400'>({selectedCourse?.reviews.length} Reviews)</span>
                         </div>
 
                         <div>
-                            <span className='text-xl font-semibold text-black'>*{selectedCourse?.price}</span>{" "}
-                            <span className='line-through text-sm text-gray-400'>*599</span>
+                            <span className='text-xl font-semibold text-black'>₹{selectedCourse?.price}</span>{" "}
+                            <span className='line-through text-sm text-gray-400'>₹({selectedCourse?.price*2})</span>
                         </div>
 
                         <ul className='text-sm text-gray-700 space-y-1 pt-2'>
